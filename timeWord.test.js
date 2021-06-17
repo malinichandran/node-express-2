@@ -1,7 +1,9 @@
-const timeWord = require('./timeWord');
+const { timeWord } = require('./timeWord');
 
-describe('#timeword', () => {
-  test('it is a function', () => {
-    expect(typeof timeWord).toBe('function');
+describe('timeWord', function() {
+  test('works noon', function() {
+    let time = timeWord("12:00");
+    expect(time).toEqual("noon");
+    
   });
 });
