@@ -105,6 +105,19 @@ describe("GET /users", function() {
     expect(response.statusCode).toBe(200);
     expect(response.body.users.length).toBe(3);
   });
+ /*****TESTS BUG #1 */
+  test("should return only basic fields", async function(){
+    const response = await request(app)
+                    .get("/users")
+                    .send({_token: tokens.u1 });
+          expect(response.statusCode).toBe(200);
+          expect(response.body.users[0]).toEqual({
+            username : "u1",
+            first_name: "fn1",
+            last_name: "ln1"
+          })
+          
+  })
 });
 
 describe("GET /users/[username]", function() {
@@ -126,6 +139,13 @@ describe("GET /users/[username]", function() {
       phone: "phone1"
     });
   });
+  /****TEST for BUG #2 */
+  test("should throw 404 error when no user found", async function(){
+    const response = await request(app)
+                      .get("/users/u5")
+                      .send({_token: tokens.u1 });
+      expect(response.statusCode).toBe(404);
+  })
 });
 
 describe("PATCH /users/[username]", function() {

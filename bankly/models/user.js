@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../db');
-const ExpressError = require('../helpers/expressError');
+const {ExpressError} = require('../helpers/expressError');
 const sqlForPartialUpdate = require('../helpers/partialUpdate');
 const { BCRYPT_WORK_FACTOR } = require("../config");
 
@@ -78,14 +78,13 @@ class User {
    * [{username, first_name, last_name, email, phone}, ...]
    *
    * */
-
+/***FIX for BUG #1 */
   static async getAll(username, password) {
     const result = await db.query(
       `SELECT username,
                 first_name,
-                last_name,
-                email,
-                phone
+                last_name
+            
             FROM users 
             ORDER BY username`
     );
@@ -112,11 +111,14 @@ class User {
 
     const user = result.rows[0];
 
-    if (!user) {
-      new ExpressError('No such user', 404);
+    if(!user){
+      /****Fixes BUG #2 "throw" keyword was missing */
+      throw new ExpressError('No such user', 404);
     }
-
+  
     return user;
+
+    
   }
 
   /** Selectively updates user from given data
