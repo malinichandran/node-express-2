@@ -112,7 +112,7 @@ class User {
     const user = result.rows[0];
 
     if(!user){
-      /****Fixes BUG #2 "throw" keyword was missing */
+      /****Fix BUG #2 "throw" keyword was missing */
       throw new ExpressError('No such user', 404);
     }
   

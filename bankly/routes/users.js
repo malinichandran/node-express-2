@@ -14,6 +14,7 @@ const { authUser, requireLogin, requireAdmin } = require('../middleware/auth');
  *    {users: [{username, first_name, last_name}, ...]}
  *
  */
+/***BUG 1 -check user model for fix*/
 
 router.get('/', authUser, requireLogin, async function(req, res, next) {
   try {
@@ -34,7 +35,7 @@ router.get('/', authUser, requireLogin, async function(req, res, next) {
  * If user cannot be found, return a 404 err.
  *
  */
-
+/****BUG 2-check user model for fix */
 router.get('/:username', authUser, requireLogin, async function(
   req,
   res,
@@ -69,7 +70,8 @@ router.patch('/:username', authUser, requireLogin, requireAdmin, async function(
   next
 ) {
   try {
-    console.log(req)
+    
+   
     if (!req.curr_admin && req.curr_username !== req.params.username) {
       throw new ExpressError('Only  that user or admin can edit a user.', 401);
     }
@@ -94,7 +96,7 @@ router.patch('/:username', authUser, requireLogin, requireAdmin, async function(
  *
  * If user cannot be found, return a 404 err.
  */
-
+/***BUG-6 "requireLogin" is missing in the route */
 router.delete('/:username', authUser, requireAdmin, async function(
   req,
   res,

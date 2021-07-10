@@ -7,7 +7,7 @@ const { SECRET_KEY } = require('../config');
 
 function requireLogin(req, res, next) {
   try {
-    if (res.curr_username) {
+    if (req.curr_username) {
       return next();
     } else {
       return next({ status: 401, message: 'Unauthorized' });
@@ -21,7 +21,7 @@ function requireLogin(req, res, next) {
 
 function requireAdmin(req, res, next) {
   try {
-    if (res.curr_admin) {
+    if (req.curr_admin) {
       return next();
     } else {
       return next({ status: 401, message: 'Unauthorized' });
