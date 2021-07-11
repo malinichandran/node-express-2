@@ -14,7 +14,7 @@ const { authUser, requireLogin, requireAdmin } = require('../middleware/auth');
  *    {users: [{username, first_name, last_name}, ...]}
  *
  */
-/***BUG 1 -check user model for fix*/
+/***BUG 1 - this route returns all of the user fields. check user model for fix*/
 
 router.get('/', authUser, requireLogin, async function(req, res, next) {
   try {
@@ -35,7 +35,7 @@ router.get('/', authUser, requireLogin, async function(req, res, next) {
  * If user cannot be found, return a 404 err.
  *
  */
-/****BUG 2-check user model for fix */
+
 router.get('/:username', authUser, requireLogin, async function(
   req,
   res,
@@ -71,11 +71,11 @@ router.patch('/:username', authUser, requireLogin, requireAdmin, async function(
 ) {
   try {
     
-   
+   /**BUG 4 the user or admin should be able to patch so || should be used instead of && */
     if (!req.curr_admin && req.curr_username !== req.params.username) {
       throw new ExpressError('Only  that user or admin can edit a user.', 401);
     }
-
+    /*** BUG -5 Username, admin fields should also be removed so the user cannot change it */
     // get fields to change; remove token so we don't try to change it
     let fields = { ...req.body };
     delete fields._token;
@@ -96,7 +96,7 @@ router.patch('/:username', authUser, requireLogin, requireAdmin, async function(
  *
  * If user cannot be found, return a 404 err.
  */
-/***BUG-6 "requireLogin" is missing in the route */
+/***BUG-6 the delete route should return the success status message */
 router.delete('/:username', authUser, requireAdmin, async function(
   req,
   res,

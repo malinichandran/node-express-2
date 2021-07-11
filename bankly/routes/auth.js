@@ -18,11 +18,8 @@ const createTokenForUser = require('../helpers/createToken');
 
 router.post('/register', async function(req, res, next) {
   try {
-    /****BUG 4- there is no need to destructure the req object as it can be passed directly as req.body  */
     const { username, password, first_name, last_name, email, phone } = req.body;
-    /****BUG 5- passing the destructured variables as an object wouldnt work.
-     * it is best to pass it in as req.body as whole
-     */
+    
     let user = await User.register({username, password, first_name, last_name, email, phone});
     const token = createTokenForUser(username, user.admin);
     return res.status(201).json({ token });
@@ -44,6 +41,7 @@ router.post('/register', async function(req, res, next) {
 router.post('/login', async function(req, res, next) {
   try {
     const { username, password } = req.body;
+   /***BUG-2 User.authenticate should await */
     let user = User.authenticate(username, password);
     const token = createTokenForUser(username, user.admin);
     return res.json({ token });

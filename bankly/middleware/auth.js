@@ -48,7 +48,7 @@ function authUser(req, res, next) {
   try {
     const token = req.body._token || req.query._token;
     if (token) {
-      /*****FIX for BUG #3 */
+      /*****BUG-3 JWT verify was not done properly */
     res.curr_username = jwt.verify(token, SECRET_KEY);
     res.curr_admin = jwt.verify(token, SECRET_KEY)
       // res.curr_username = payload.username;
